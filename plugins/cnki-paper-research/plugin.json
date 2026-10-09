@@ -1,0 +1,29 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "cnki-paper-research",
+  "version": "0.3.1",
+  "description": "Search CNKI, hand blocked requests to an authenticated browser, fall back to public scholarly metadata, and preserve provenance.",
+  "author": {
+    "name": "Human A"
+  },
+  "keywords": ["cnki", "papers", "academic-research", "citations", "mcp"],
+  "extensions": {
+    "org.cnki-paper-research": {
+      "skills": "./skills/",
+      "mcpServers": "./mcp.json",
+      "interface": {
+        "displayName": "知网论文检索",
+        "shortDescription": "知网检索、浏览器接管与多来源核验",
+        "longDescription": "优先检索知网；直连受阻时接管宿主已授权浏览器；仍不可用时降级到 Crossref、OpenAlex 和期刊官网，并逐字段保留来源与核验状态。",
+        "developerName": "Human A",
+        "category": "Education & Research",
+        "capabilities": ["Interactive", "Read"],
+        "defaultPrompt": [
+          "搜索近五年与生成式人工智能教育应用相关的知网论文，并总结主要结论。",
+          "在知网查找指定关键词的高被引论文；如访问受阻，使用浏览器并以公开学术来源交叉核验。"
+        ],
+        "brandColor": "#0F766E"
+      }
+    }
+  }
+}
