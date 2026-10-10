@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "cnki-paper-research",
-  "version": "0.3.1",
-  "description": "Search CNKI, hand blocked requests to an authenticated browser, fall back to public scholarly metadata, and preserve provenance.",
+  "version": "0.4.0",
+  "description": "Search CNKI via the host's built-in browser first and a cloud browser as fallback, with browser status shown in the right-side panel; fall back to public scholarly metadata, and preserve provenance.",
   "author": {
     "name": "Human A"
   },
@@ -12,9 +12,9 @@
       "skills": "./skills/",
       "mcpServers": "./mcp.json",
       "interface": {
-        "displayName": "知网论文检索",
-        "shortDescription": "知网检索、浏览器接管与多来源核验",
-        "longDescription": "优先检索知网；直连受阻时接管宿主已授权浏览器；仍不可用时降级到 Crossref、OpenAlex 和期刊官网，并逐字段保留来源与核验状态。",
+        "displayName": "知网检索与总结插件",
+        "shortDescription": "内置浏览器优先、云端浏览器兜底的知网检索与总结",
+        "longDescription": "必须通过浏览器在知网检索：优先调用内置浏览器，不可用时调用云端浏览器，检索状态在页面右侧实时展示；浏览器均不可用时降级到 Crossref、OpenAlex 和期刊官网，并逐字段保留来源与核验状态。",
         "developerName": "Human A",
         "category": "Education & Research",
         "capabilities": ["Interactive", "Read"],

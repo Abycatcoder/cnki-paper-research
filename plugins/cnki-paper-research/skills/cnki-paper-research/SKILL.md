@@ -1,24 +1,21 @@
 ---
 name: cnki-paper-research
-description: Search CNKI (中国知网) for papers by keyword, topic, title, author, institution, journal, or date range; hand off blocked CNKI requests to an authenticated browser; fall back to Crossref, OpenAlex, publisher sites, and other public scholarly sources; preserve provenance, summarize accessible evidence, and format citations. Use for 查知网、搜索中文论文、文献调研、参考文献、被引信息或论文综述。
+description: Search CNKI (中国知网) for papers by keyword, topic, title, author, institution, journal, or date range via the host's built-in browser first and a cloud browser as fallback; browser work is shown in the right-side panel; fall back to Crossref, OpenAlex, publisher sites, and other public scholarly sources; preserve provenance, summarize accessible evidence, and format citations. Use for 查知网、搜索中文论文、文献调研、参考文献、被引信息或论文综述。
 ---
 
 # CNKI Paper Research
 
-Run the following access ladder in order. Preserve the user's filters across every layer. Never claim a fallback result was verified by CNKI.
+CNKI paper search MUST go through a browser: the host's built-in browser first, the cloud browser as fallback. Keep the browser panel visible on the right side so the user can watch the retrieval status in real time. Preserve the user's filters across every layer. Never claim a fallback result was verified by CNKI.
 
 ## Access ladder
 
-1. Call `search_papers` with the exact query. Default to 10 results and relevance order.
-2. If status is `ok`, call `get_paper` for selected CNKI detail URLs.
-3. If either tool returns `direct_access_failed`, `captcha_required`, `no_visible_results`, or a login wall, hand the returned URL to an available authenticated browser:
-   - Prefer the user's selected, authorized browser integration with an existing signed-in session.
-   - Otherwise use a browser capability provided by the host when available. Select by available capabilities and authorization, not a product name.
-   - Ask the user to select or connect a browser only when none is available. Never ask for a password in chat.
-   - Open the exact CNKI URL, retain the search filters, and let the user complete login, institutional authentication, or CAPTCHA manually.
-   - After the user completes the checkpoint, continue in the same browser session. Do not bypass access controls.
-   - Extract only visible title, authors, institutions, source, date, volume, issue, pages, CN, ISSN, DOI, keywords, abstract, CNKI citation count, and detail URL.
-4. If browser access is unavailable, declined, or still yields no usable records, call `search_public_sources` with the same query and filters. This searches Crossref and OpenAlex.
+1. **内置浏览器（必选首选）**：调用宿主内置浏览器，在页面右侧展示浏览器面板与检索状态，打开知网检索 URL 并保留用户的年份、作者、机构等筛选条件：
+   - 登录、机构认证、验证码由用户在浏览器中手动完成；完成后在同一浏览器会话中继续只读检索。绝不在聊天中索取密码，绝不绕过访问控制。
+   - 检索过程（打开页面、输入关键词、翻页、读取详情）都在右侧面板可见，关键节点用一句话向用户同步进度。
+   - 仅提取页面可见字段：标题、作者、机构、来源、日期、卷期页、CN刊号、ISSN、DOI、关键词、摘要、知网被引次数及详情链接。
+2. **云端浏览器（必选兜底）**：内置浏览器不可用（宿主未提供、未授权或能力缺失）时，改用云端浏览器执行同样的知网检索，同样要求检索状态在右侧可见，规则与第 1 层相同。
+3. 必须通过内置或云端浏览器的搜索功能在知网上执行论文检索，不得跳过浏览器凭空生成知网结果。`search_papers` 与 `get_paper` 仅用于直连预检或补充读取公开详情页；其返回的 `search_url` 应交给上述浏览器继续。
+4. 内置与云端浏览器均不可用、被用户拒绝或仍无可用记录时，调用 `search_public_sources`（Crossref 与 OpenAlex）并沿用相同筛选条件，结果必须标注为公开来源、不等同于知网结果。
 5. If public APIs are sparse and web search is available, search exact titles or `site:<publisher-domain>` queries. Prefer publisher or journal pages, DOI landing pages, and institutional repositories. Do not use an aggregator to override a primary-source field.
 
 ## Reconciliation
