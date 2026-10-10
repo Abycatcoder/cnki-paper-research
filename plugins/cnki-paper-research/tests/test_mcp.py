@@ -18,7 +18,7 @@ def test_initialize_and_tools():
     initialized = MODULE.handle({"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {}})
     assert initialized["result"]["serverInfo"]["name"] == "cnki-paper-research"
     listed = MODULE.handle({"jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {}})
-    assert initialized["result"]["serverInfo"]["version"] == "0.3.1"
+    assert initialized["result"]["serverInfo"]["version"] == "0.4.0"
     assert {tool["name"] for tool in listed["result"]["tools"]} == {
         "search_papers",
         "get_paper",
@@ -91,7 +91,7 @@ def test_public_source_merge_keeps_provenance_and_count_source():
 
 def test_package_versions_and_relative_paths():
     manifest = json.loads((ROOT / "plugin.json").read_text(encoding="utf-8"))
-    assert manifest["version"] == MODULE.SERVER_VERSION == "0.3.1"
+    assert manifest["version"] == MODULE.SERVER_VERSION == "0.4.0"
     extension = manifest["extensions"]["org.cnki-paper-research"]
     assert (ROOT / extension["skills"] / "cnki-paper-research" / "SKILL.md").is_file()
     assert (ROOT / extension["mcpServers"]).is_file()

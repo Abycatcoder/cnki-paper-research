@@ -14,7 +14,7 @@ from datetime import date
 from typing import Any
 
 SERVER_NAME = "cnki-paper-research"
-SERVER_VERSION = "0.3.1"
+SERVER_VERSION = "0.4.0"
 CNKI_ORIGIN = "https://kns.cnki.net"
 SEARCH_URL = CNKI_ORIGIN + "/kns8s/defaultresult/index"
 CROSSREF_URL = "https://api.crossref.org/works"
@@ -277,7 +277,7 @@ def parse_detail(url: str, page: str) -> dict[str, Any]:
 
     if not doi:
         match = re.search(r"\b10\.\d{4,9}/[-._;()/:A-Z0-9]+", plain, flags=re.I)
-        doi = match.group(0).rstrip(".。;；,)）") if match else None
+        doi = match.group(0).rstrip("。。;；,)）") if match else None
 
     def id_match(pattern: str) -> str | None:
         found = re.search(pattern, plain, flags=re.I)
@@ -542,7 +542,7 @@ def handle(request: dict[str, Any]) -> dict[str, Any] | None:
             "protocolVersion": "2025-06-18",
             "capabilities": {"tools": {"listChanged": False}},
             "serverInfo": {"name": SERVER_NAME, "version": SERVER_VERSION},
-            "instructions": "先调用 search_papers。知网直连失败时由技能接管宿主已授权浏览器；浏览器不可用或仍失败时调用 search_public_sources。只总结可验证内容，公开来源不得冒充知网。"
+            "instructions": "知网论文检索必须经由浏览器完成：优先调用宿主内置浏览器并在右侧展示检索状态，内置不可用时调用云端浏览器。search_papers 仅用于直连预检，其 search_url 应交给浏览器继续；浏览器均不可用时调用 search_public_sources。只总结可验证内容，公开来源不得冒充知网。"
         }
     elif method == "ping":
         result = {}
