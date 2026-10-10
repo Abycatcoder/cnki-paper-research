@@ -1,11 +1,11 @@
-# 知网论文检索 Plugin — 0.3.1
+# 知网检索与总结插件 — 0.4.0
 
 这是一个可迁移的论文研究插件包：核心工作流和 MCP 服务不依赖特定产品名称。不同宿主的清单格式、安装入口和浏览器能力可能不同。
 
 ## 包结构
 
-- `plugins/cnki-paper-research/plugin.json`：插件清单，版本0.3.1；扩展命名空间 `org.cnki-paper-research` 描述技能、MCP配置及展示信息。
-- `plugins/cnki-paper-research/skills/cnki-paper-research/`：检索、浏览器接管、多来源核验与固定四部分输出规范。
+- `plugins/cnki-paper-research/plugin.json`：插件清单，版本0.4.0；扩展命名空间 `org.cnki-paper-research` 描述技能、MCP配置及展示信息（安装显示名：知网检索与总结插件）。
+- `plugins/cnki-paper-research/skills/cnki-paper-research/`：内置浏览器优先、云端浏览器兜底的检索流程、多来源核验与固定四部分输出规范。
 - `plugins/cnki-paper-research/server/cnki_mcp.py`：Python标准库实现的只读MCP服务。
 - `plugins/cnki-paper-research/mcp.json`、`.mcp.json`：STDIO服务配置。
 
@@ -24,7 +24,7 @@ args: /absolute/path/to/plugins/cnki-paper-research/server/cnki_mcp.py
 
 ## 浏览器与数据来源
 
-优先知网直连；遇到访问失败、验证码、无可见结果或登录墙时，尝试已授权的浏览器会话。登录、机构认证及验证码由用户在浏览器中完成，随后在同一会话继续只读检索。浏览器不可用或仍失败时，使用Crossref、OpenAlex及可用的公开网页检索能力补充证据。
+知网论文检索必须经由浏览器完成：优先调用宿主内置浏览器，内置不可用时调用云端浏览器；浏览器检索的工作状态在页面右侧实时展示。登录、机构认证及验证码由用户在浏览器中完成，随后在同一会话继续只读检索。内置与云端浏览器均不可用或仍失败时，使用Crossref、OpenAlex及可用的公开网页检索能力补充证据。
 
 插件不绕过付费墙、验证码或机构权限，不把公开来源结果冒充知网结果，也不把其他来源的引用量标成知网被引。浏览器和公开网页搜索是否可用取决于宿主能力，而不是特定产品名称。
 
@@ -45,4 +45,4 @@ python3 plugins/cnki-paper-research/tests/test_mcp.py
 
 测试使用模拟页面及模拟响应，不要求登录学术网站。实际联网检索仍需宿主网络及访问权限，离线测试通过不表示知网连接已恢复。
 
-测试提示词：使用知网论文检索插件搜索“生成式人工智能教育应用”，筛选近五年的论文，返回5篇并按四部分格式展示，明确标注每篇的核验状态、证据范围和引用量来源。
+测试提示词：使用知网检索与总结插件搜索“生成式人工智能教育应用”，筛选近五年的论文，返回5篇并按四部分格式展示，明确标注每篇的核验状态、证据范围和引用量来源。
